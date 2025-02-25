@@ -1,32 +1,32 @@
 #!/bin/bash
 
-# Verifica se o usuário tem permissão de root
+# Checks if the user has root permissions
 if [ "$EUID" -ne 0 ]; then
-  echo "Por favor, execute como root (use sudo)"
+  echo "Please run as root (use sudo)"
   exit 1
 fi
 
-echo "🔧 Configurando interface virtual CAN (vcan0)..."
+echo "🔧 Configuring virtual CAN interface (vcan0)..."
 
-# Carrega o módulo vcan
-echo "🔹 Carregando módulo vcan..."
+# Loads the vcan module
+echo "🔹 Loading vcan module..."
 modprobe vcan
 
-# Verifica se a interface já existe
+# Checks if the interface already exists
 if ip link show vcan0 &> /dev/null; then
-  echo "✅ Interface vcan0 já existe."
+  echo "✅ Interface vcan0 already exists."
 else
-  # Adiciona a interface vcan0
-  echo "🔹 Criando interface vcan0..."
+  # Adds the vcan0 interface
+  echo "🔹 Creating vcan0 interface..."
   ip link add dev vcan0 type vcan
 
-  # Ativa a interface vcan0
-  echo "🔹 Ativando interface vcan0..."
+  # Activates the vcan0 interface
+  echo "🔹 Enabling vcan0 interface..."
   ip link set up vcan0
 
-  echo "✅ Interface vcan0 configurada com sucesso!"
+  echo "✅ Interface vcan0 successfully configured!"
 fi
 
-# Exibir interfaces VCAN ativas
-echo "📜 Listando interfaces VCAN ativas:"
+# Display active VCAN interfaces
+echo "📜 Listing active VCAN interfaces:"
 ip link show type vcan
