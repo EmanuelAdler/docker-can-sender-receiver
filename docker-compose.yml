@@ -1,0 +1,13 @@
+version: '3'
+services:
+  can_sender:
+    build: .
+    container_name: sender
+    network_mode: "host"
+    command: ["./sender"]
+
+  can_receiver:
+    build: .
+    container_name: receiver
+    network_mode: "host"
+    command: ["./receiver"]
