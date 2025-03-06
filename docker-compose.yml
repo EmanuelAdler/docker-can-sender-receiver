@@ -4,10 +4,10 @@ services:
     build: .
     container_name: sender
     network_mode: "host"
-    command: ["./sender"]
+    command: ["./bin/sender"]
 
   can_receiver:
     build: .
     container_name: receiver
     network_mode: "host"
-    command: ["./receiver"]
+    command: ["./bin/receiver"]
