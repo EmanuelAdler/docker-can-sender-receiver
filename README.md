@@ -30,12 +30,12 @@ docker ps
 ## Communication Test
 Send a CAN frame:
 ```sh
-docker exec sender cansend vcan0 123#DEADBEEF
+docker exec ./bin/sender cansend vcan0 123#DEADBEEF
 ```
 
 View the received messages:
 ```sh
-docker exec receiver candump vcan0
+docker exec .bin/receiver candump vcan0
 ```
 
 To stop the containers:
