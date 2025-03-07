@@ -40,7 +40,7 @@ int main() {
 
     int i;
     for (i=1; i <= 5; i++) {
-        // Enviar frame CAN
+        // Send CAN frame
         if (write(sock, &frame, sizeof(frame)) != sizeof(frame)) {
             perror("Error sending frame");
             return 1;
