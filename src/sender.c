@@ -12,8 +12,7 @@ int main() {
 
     for (int i = 0; i < 5; i++) {
         // Send CAN frame
-        if (write(sock, &frame, sizeof(frame)) != sizeof(frame)) {
-            perror("Error sending frame");
+        if (send_can_frame(sock, &frame) < 0) {
             close_can_socket(sock);
             return 1;
         }
