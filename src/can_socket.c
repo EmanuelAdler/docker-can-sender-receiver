@@ -35,3 +35,20 @@ int create_can_socket(const char *interface) {
 void close_can_socket(int sock) {
     close(sock);
 }
+
+int send_can_frame(int sock, struct can_frame *frame) {
+    if (write(sock, frame, sizeof(*frame)) != sizeof(*frame)) {
+        perror("Error sending frame");
+        return -1;
+    }
+    return 0;
+}
+
+int receive_can_frame(int sock, struct can_frame *frame) {
+    int nbytes = read(sock, frame, sizeof(*frame));
+    if (nbytes < 0) {
+        perror("Error receiving frame");
+        return -1;
+    }
+    return 0;
+}
