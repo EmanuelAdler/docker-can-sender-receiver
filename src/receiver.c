@@ -8,14 +8,10 @@ int main() {
 
     // Receive CAN frame
     while (1) {
-        int nbytes = read(sock, &frame, sizeof(frame));
-        if (nbytes < 0) {
-            perror("Error receiving frame");
-            close_can_socket(sock);
-            return 1;
+        if (receive_can_frame(sock, &frame) > 0) {
+            printf("Received CAN ID: %X Data: %s\n", frame.can_id, frame.data);
+            fflush(stdout);
         }
-        printf("Received CAN ID: %X Data: %s\n", frame.can_id, frame.data);
-        fflush(stdout);
     }
 
     close_can_socket(sock);
