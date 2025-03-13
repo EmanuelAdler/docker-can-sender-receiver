@@ -1,31 +1,38 @@
 CC = gcc
 CFLAGS = -Wall
-TARGETS = sender receiver
-OBJ = can_socket.o
+BIN_DIR = ../bin
+SRC_DIR = .
+OBJ = $(BIN_DIR)/can_socket.o
+
+# Executables
+TARGETS = $(BIN_DIR)/sender $(BIN_DIR)/receiver
 
 all: $(TARGETS)
 
+# Ensure the bin directory exists
+$(shell mkdir -p $(BIN_DIR))
+
 # Dependency rules
-can_socket.o: can_socket.c can_socket.h
-	$(CC) $(CFLAGS) -c can_socket.c -o can_socket.o
+$(BIN_DIR)/can_socket.o: $(SRC_DIR)/can_socket.c $(SRC_DIR)/can_socket.h
+	$(CC) $(CFLAGS) -c $(SRC_DIR)/can_socket.c -o $(BIN_DIR)/can_socket.o
 
-sender.o: sender.c can_socket.h
-	$(CC) $(CFLAGS) -c sender.c -o sender.o
+$(BIN_DIR)/sender.o: $(SRC_DIR)/sender.c $(SRC_DIR)/can_socket.h
+	$(CC) $(CFLAGS) -c $(SRC_DIR)/sender.c -o $(BIN_DIR)/sender.o
 
-receiver.o: receiver.c can_socket.h
-	$(CC) $(CFLAGS) -c receiver.c -o receiver.o
+$(BIN_DIR)/receiver.o: $(SRC_DIR)/receiver.c $(SRC_DIR)/can_socket.h
+	$(CC) $(CFLAGS) -c $(SRC_DIR)/receiver.c -o $(BIN_DIR)/receiver.o
 
 # Build rules for executables
-sender: sender.o $(OBJ)
-	$(CC) $(CFLAGS) sender.o $(OBJ) -o sender
+$(BIN_DIR)/sender: $(BIN_DIR)/sender.o $(OBJ)
+	$(CC) $(CFLAGS) $(BIN_DIR)/sender.o $(OBJ) -o $(BIN_DIR)/sender
 
-receiver: receiver.o $(OBJ)
-	$(CC) $(CFLAGS) receiver.o $(OBJ) -o receiver
+$(BIN_DIR)/receiver: $(BIN_DIR)/receiver.o $(OBJ)
+	$(CC) $(CFLAGS) $(BIN_DIR)/receiver.o $(OBJ) -o $(BIN_DIR)/receiver
 
 # Clean command
 clean:
-	rm -f $(TARGETS) *.o
+	rm -rf $(BIN_DIR)/*
 
 # Run command
 run: all
-	./sender & ./receiver
+$(BIN_DIR)/sender & $(BIN_DIR)/receiver
