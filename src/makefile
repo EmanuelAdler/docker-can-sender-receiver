@@ -35,4 +35,4 @@ clean:
 
 # Run command
 run: all
-$(BIN_DIR)/sender & $(BIN_DIR)/receiver
+	$(BIN_DIR)/sender & $(BIN_DIR)/receiver
