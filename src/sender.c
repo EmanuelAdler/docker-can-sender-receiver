@@ -7,11 +7,19 @@
 #define AES_BLOCK_SIZE 16
 
 const unsigned char AES_KEY[16] = "0123456789abcdef";
+const unsigned char AES_IV[16] = "abcdef9876543210";
 
-void encrypt_data(const char *input, unsigned char *output) {
-    AES_KEY enc_key;
-    AES_set_encrypt_key(AES_KEY, 128, &enc_key);
-    AES_encrypt((const unsigned char*)input, output, &enc_key);
+void encrypt_data(const unsigned char *input, unsigned char *output) {
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    int len, ciphertext_len;
+
+    EVP_EncryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, AES_SECRET_KEY, AES_IV);
+    EVP_EncryptUpdate(ctx, output, &len, input, AES_BLOCK_SIZE);
+    ciphertext_len = len;
+    EVP_EncryptFinal_ex(ctx, output + len, &len);
+    ciphertext_len += len;
+
+    EVP_CIPHER_CTX_free(ctx);
 }
 
 int main() {
