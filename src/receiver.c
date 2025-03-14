@@ -42,22 +42,20 @@ int main() {
             fflush(stdout);
 
             if (frame.can_dlc == 8) {
-                static int received_bytes = 0;
-                static unsigned char buffer[AES_BLOCK_SIZE];
-
-                memcpy(buffer + received_bytes, frame.data, 8);
+                memcpy(encrypted_data + received_bytes, frame.data, 8);
                 received_bytes += 8;
 
                 if (received_bytes == AES_BLOCK_SIZE) {
-                    decrypt_data(buffer, decrypted_message);
-                    decrypted_message[AES_BLOCK_SIZE - 1] = '\0';
+                    decrypt_data(encrypted_data, decrypted_message);
+                    decrypted_message[AES_BLOCK_SIZE - 1] = '\0';  // Ensure null termination
                     printf("Decrypted message: %s\n", decrypted_message);
-                    received_bytes = 0;
+                    received_bytes = 0;  // Reset for next message
                 }
+            } else {
+                printf("⚠️ Warning: Received unexpected frame size (%d bytes). Ignoring.\n", frame.can_dlc);
             }
         }
     }
-
     close_can_socket(sock);
     return 0;
 }

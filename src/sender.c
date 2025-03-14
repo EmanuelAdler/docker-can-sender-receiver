@@ -43,7 +43,7 @@ int main() {
             break;
         }
 
-        encrypt_data(input, encrypted_data);
+        encrypt_data((unsigned char*)input, encrypted_data);
 
         frame.can_id = 0x123;
         frame.can_dlc = 8;
