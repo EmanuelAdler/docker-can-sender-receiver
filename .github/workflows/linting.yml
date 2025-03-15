@@ -1,0 +1,21 @@
+name: MISRA-C Linting
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
+
+      - name: Download MISRA addon for cppcheck
+        run: wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.py -O misra.py
+
+      - name: Run cppcheck with MISRA-C addon
+        run: |
+          cppcheck --addon=./misra.py --enable=all --suppress=missingIncludeSystem --std=c99 --error-exitcode=1 src/*.c test/*.c
