@@ -83,12 +83,14 @@ This ensures that every commit provides meaningful context and can be easily tra
 - **Initial Misconfigurations:** Some dependencies were missing in scripts, requiring updates.
 - **Docker/VCan Issues on WSL2:** Led to switching to VirtualBox for a stable environment.
 - **Code Organization:** Refactoring into modules helped maintainability.
+- **Automated testing:** Using a test framework helped improve code quality and save time.
 
 ### **Improvements Implemented:**
-- Write here.
+- Automated unit and integration testing.
+- Project organized in separated folders.
 
 ### **Reflections from Team Members:**
-- **Member A:** "Write here."
+- **Paulo:** "Implementing unit and integration tests, along with GitHub Actions, improved my development process. Unit tests ensured each part worked correctly, while integration tests checked how they interacted. Automating everything with GitHub Actions saved time and caught issues. This experience showed me how testing makes code more reliable and deployments safer."
 - **Member B:** "Write here."
 - **Member C:** "Write here."
 
