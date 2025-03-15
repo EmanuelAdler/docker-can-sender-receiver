@@ -9,13 +9,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install cppcheck
-        run: sudo apt-get update && sudo apt-get install -y cppcheck python3 python3-pip
-
-      - name: Download MISRA Addon Script
-        run: wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.py
-
-      - name: Run cppcheck with MISRA rules
+      - name: Install Dependencies
         run: |
-          cppcheck --addon=misra.py --enable=all --suppress=missingIncludeSystem --std=c99 --dump sender.c receiver.c
-          python3 misra.py --rule-texts=misra.txt *.dump
+          sudo apt-get update
+          sudo apt-get install -y cppcheck python3 python3-pip
+          pip3 install pycparser
+
+      - name: Download Cppcheck Addons
+        run: |
+          wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.py
+          wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/cppcheckdata.py
+
+      - name: Run Cppcheck with MISRA Addon
+        run: |
+          cppcheck --addon=./misra.py --enable=all --suppress=missingIncludeSystem --std=c99 --error-exitcode=1 sender.c receiver.c
