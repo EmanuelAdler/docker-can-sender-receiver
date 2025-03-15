@@ -12,15 +12,14 @@ jobs:
       - name: Install cppcheck
         run: sudo apt-get update && sudo apt-get install -y cppcheck
 
-      - name: Download MISRA Addon Files
+      - name: Download MISRA Addon
         run: |
           wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.py
-          wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.json
 
       - name: Run cppcheck with MISRA
         run: |
           cppcheck \
-            --addon=misra.json \
+            --addon=misra.py \
             --enable=all \
             --suppress=missingIncludeSystem \
             --std=c99 \
