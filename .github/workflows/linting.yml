@@ -1,0 +1,28 @@
+name: MISRA-C Linting
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cppcheck python3 python3-pip
+          pip3 install pycparser
+
+      - name: Download Cppcheck Addons
+        run: |
+          wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.py
+          wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/cppcheckdata.py
+
+      - name: Run Cppcheck with MISRA Addon
+        run: |
+          # Generate dump files
+          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 --dump ./src/*.c ./src/*.h
+          # Run MISRA addon on dump files
+          python3 misra.py --rule-texts=misra.txt sender.dump receiver.dump
