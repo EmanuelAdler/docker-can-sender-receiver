@@ -42,6 +42,6 @@ int main(void)
         }
     }
 
-    (void)close_can_socket(sock);
+    close_can_socket(sock);
     return SUCCESS_CODE;
 }

@@ -8,6 +8,9 @@
 #include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
+#include <net/if.h>
+#include <sys/ioctl.h>
+#include <linux/can.h>
 
 #define SOCKET_ERROR         (-1)
 #define OPERATION_SUCCESS    (0)
@@ -75,7 +78,7 @@ void close_can_socket(int32_t sock)
     }
 }
 
-int32_t send_can_frame(int32_t sock, const struct can_frame *frame)
+int send_can_frame(int sock, const struct can_frame *frame)
 {
     const ssize_t sent_bytes = write(sock, frame, CAN_FRAME_SIZE);
     

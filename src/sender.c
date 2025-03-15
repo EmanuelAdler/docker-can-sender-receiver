@@ -16,7 +16,7 @@ int main(void)
 {
     int sock = -1;
     struct can_frame frame;
-    uint8_t i;
+    uint8_t frame_index;
 
     sock = create_can_socket(CAN_INTERFACE);
     if (sock < 0)
@@ -29,11 +29,11 @@ int main(void)
     frame.can_dlc = CAN_DLC;
     (void)memcpy(frame.data, DATA_STRING, sizeof(DATA_STRING) - 1U);
 
-    for (i = 0U; i < NUM_SENDS; i++)
+    for (frame_index = 0U; frame_index < NUM_SENDS; frame_index++)
     {
         if (send_can_frame(sock, &frame) < 0)
         {
-            (void)close_can_socket(sock);
+            close_can_socket(sock);
             return EXIT_FAILURE;
         }
 
@@ -41,7 +41,7 @@ int main(void)
     }
 
     (void)printf("CAN Frame sent\n");
-    (void)close_can_socket(sock);
+    close_can_socket(sock);
 
     return EXIT_SUCCESS;
 }
