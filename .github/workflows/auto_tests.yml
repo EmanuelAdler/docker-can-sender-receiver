@@ -1,0 +1,27 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test-and-send:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run make test
+        run: |
+          cd test
+          make test
+
+      - name: Wait for 1 second
+        run: sleep 1
+
+      - name: Run make send
+        run: |
+          cd test
+          make send
