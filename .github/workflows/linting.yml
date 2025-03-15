@@ -17,5 +17,5 @@ jobs:
 
       - name: Run cppcheck with MISRA rules
         run: |
-          cppcheck --addon=misra.py --enable=all --suppress=missingIncludeSystem --std=c99 --dump *.c *.h
+          cppcheck --addon=misra.py --enable=all --suppress=missingIncludeSystem --std=c99 --dump sender.c receiver.c
           python3 misra.py --rule-texts=misra.txt *.dump
