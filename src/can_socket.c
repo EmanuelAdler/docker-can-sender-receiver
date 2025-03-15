@@ -57,7 +57,7 @@ void encrypt_data(const unsigned char *input, unsigned char *output) {
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
     int len, ciphertext_len;
 
-    EVP_EncryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, AES_KEY, AES_IV);
+    EVP_EncryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, AES_USER_KEY, AES_USER_IV);
     EVP_EncryptUpdate(ctx, output, &len, input, AES_BLOCK_SIZE);
     ciphertext_len = len;
     EVP_EncryptFinal_ex(ctx, output + len, &len);
@@ -70,7 +70,7 @@ void decrypt_data(const unsigned char *input, char *output) {
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
     int len, plaintext_len;
 
-    EVP_DecryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, AES_KEY, AES_IV);
+    EVP_DecryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, AES_USER_KEY, AES_USER_IV);
     EVP_DecryptUpdate(ctx, (unsigned char*)output, &len, input, AES_BLOCK_SIZE);
     plaintext_len = len;
     EVP_DecryptFinal_ex(ctx, (unsigned char*)output + len, &len);
