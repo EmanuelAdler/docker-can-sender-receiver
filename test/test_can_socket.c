@@ -22,6 +22,7 @@ void test_create_can_socket_invalid() {
     CU_ASSERT(sock == -1);
 }
 
+// integration test
 void test_send_receive_can_frame() {
     int sock = create_can_socket(TEST_INTERFACE);
     CU_ASSERT(sock >= 0);
