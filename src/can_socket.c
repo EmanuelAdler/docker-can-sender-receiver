@@ -1,10 +1,5 @@
 #include "can_socket.h"
 
-#define AES_BLOCK_SIZE 16
-
-const unsigned char AES_KEY[16] = "0123456789abcdef";
-const unsigned char AES_IV[16] = "abcdef9876543210";
-
 int create_can_socket(const char *interface) {
     int sock;
     struct sockaddr_can addr;

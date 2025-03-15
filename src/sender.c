@@ -3,8 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define AES_BLOCK_SIZE 16
-
 void read_message(char *input) {
     printf("> ");
     memset(input, 0, AES_BLOCK_SIZE);

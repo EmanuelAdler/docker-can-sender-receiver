@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define AES_BLOCK_SIZE 16
-
 void process_received_frame(int sock) {
     struct can_frame frame;
     unsigned char encrypted_data[AES_BLOCK_SIZE];
