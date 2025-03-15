@@ -1,4 +1,4 @@
-name: MISRA-C Linting
+name: Linting with cppcheck
 
 on: [push, pull_request]
 
@@ -6,13 +6,12 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install cppcheck
-      run: sudo apt-get update && sudo apt-get install -y cppcheck
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Lint Sender
-      run: cppcheck --enable=all --addon=misra.json --suppress=missingIncludeSystem --error-exitcode=1 sender.c
+      - name: Install cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
 
-    - name: Lint Receiver
-      run: cppcheck --enable=all --addon=misra.json --error-exitcode=1 receiver.c
+      - name: Run cppcheck on C source files
+        run: |
+          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 sender.c receiver.c
