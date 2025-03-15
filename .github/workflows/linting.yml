@@ -21,8 +21,7 @@ jobs:
 
       - name: Generate Dump Files
         run: |
-          cd ..
-          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 --dump *.c *.h
+          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 --dump ./*.c ./*.h
 
       - name: Run MISRA Addon
         run: |
