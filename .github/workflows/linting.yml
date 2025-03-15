@@ -23,6 +23,6 @@ jobs:
       - name: Run Cppcheck with MISRA Addon
         run: |
           # Generate dump files
-          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 --dump sender.c receiver.c
+          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 --dump ./src/*.c ./src/*.h
           # Run MISRA addon on dump files
           python3 misra.py --rule-texts=misra.txt sender.dump receiver.dump
