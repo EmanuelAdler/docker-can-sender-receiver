@@ -1,4 +1,3 @@
-#include "can_socket.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,24 +7,23 @@
 #include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
-#include <net/if.h>
-#include <sys/ioctl.h>
-#include <linux/can.h>
+#include <linux/if.h>
+#include "can_socket.h"
 
 #define SOCKET_ERROR         (-1)
 #define OPERATION_SUCCESS    (0)
 #define MAX_INTERFACE_LEN    (IFNAMSIZ - 1U)
 #define CAN_FRAME_SIZE       (sizeof(struct can_frame))
 
-static int32_t validate_interface(const char *interface)
+static int validate_interface(const char *interface)
 {
     const size_t len = strlen(interface);
     return (len > 0U) && (len <= MAX_INTERFACE_LEN) ? OPERATION_SUCCESS : SOCKET_ERROR;
 }
 
-int32_t create_can_socket(const char *interface)
+int create_can_socket(const char *interface)
 {
-    int32_t sock = SOCKET_ERROR;
+    int sock = SOCKET_ERROR;
     struct sockaddr_can addr;
     struct ifreq ifr;
 
@@ -70,11 +68,11 @@ int32_t create_can_socket(const char *interface)
     return sock;
 }
 
-void close_can_socket(int32_t sock)
+void close_can_socket(int sock)
 {
     if (sock >= 0)
     {
-        (void)close(sock);
+        close(sock);
     }
 }
 
@@ -91,7 +89,7 @@ int send_can_frame(int sock, const struct can_frame *frame)
     return OPERATION_SUCCESS;
 }
 
-int32_t receive_can_frame(int32_t sock, struct can_frame *frame)
+int receive_can_frame(int sock, struct can_frame *frame)
 {
     const ssize_t received_bytes = read(sock, frame, CAN_FRAME_SIZE);
     
