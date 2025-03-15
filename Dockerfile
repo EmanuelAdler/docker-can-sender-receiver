@@ -10,6 +10,7 @@ RUN apt update && apt install -y \
     can-utils \
     iproute2 \
     iputils-ping \
+    libssl-dev \
     make
 
 # Transfer files to container
