@@ -32,7 +32,7 @@ static void test_create_can_socket(void)
     CU_ASSERT(sock >= 0);
     if (sock >= 0) 
     {
-        (void)close_can_socket(sock);
+        close_can_socket(sock);
     }
 }
 
@@ -65,7 +65,7 @@ static void test_send_receive_can_frame(void)
     CU_ASSERT(send_can_frame(sock, &frame) == 0);
     CU_ASSERT(receive_can_frame(sock, &received_frame) == 0);
 
-    (void)close_can_socket(sock);
+    close_can_socket(sock);
 }
 
 static void test_close_can_socket(void) 
@@ -74,7 +74,7 @@ static void test_close_can_socket(void)
     CU_ASSERT(sock >= 0);
     if (sock >= 0) 
     {
-        (void)close_can_socket(sock);
+        close_can_socket(sock);
     }
 }
 
@@ -104,7 +104,7 @@ static void test_receive_can_frame_closed_socket(void)
     
     if (sock >= 0)
     {
-        (void)close_can_socket(sock);
+        close_can_socket(sock);
     }
     
     struct can_frame frame;
@@ -119,14 +119,14 @@ int main(void)
 
     if (CU_initialize_registry() != CUE_SUCCESS)
     {
-        (void)CU_cleanup_registry();
+        CU_cleanup_registry();
         return (int)CU_get_error();
     }
 
     pSuite = CU_add_suite("CAN Socket Test Suite", init_suite, clean_suite);
     if (pSuite == NULL)
     {
-        (void)CU_cleanup_registry();
+        CU_cleanup_registry();
         return (int)CU_get_error();
     }
 
@@ -141,14 +141,14 @@ int main(void)
 
     if (!tests_added)
     {
-        (void)CU_cleanup_registry();
+        CU_cleanup_registry();
         return (int)CU_get_error();
     }
 
     CU_basic_set_mode(CU_BRM_VERBOSE);
     (void)CU_basic_run_tests();
     error_code = CU_get_error();
-    (void)CU_cleanup_registry();
+    CU_cleanup_registry();
 
     return (int)error_code;
 }
