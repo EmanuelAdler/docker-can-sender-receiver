@@ -88,7 +88,9 @@ This ensures that every commit provides meaningful context and can be easily tra
 - Write here.
 
 ### **Reflections from Team Members:**
-- **Member A:** "Write here."
+- **Letícia Queiroz:** "Essa experiência foi completamente nova para mim, pois nunca tinha trabalhado com comunicação CAN e criptografia em software embarcado. No início, enfrentei desafios como a fragmentação das mensagens criptografadas e a organização do código, mas aos poucos fui compreendendo melhor a estrutura necessária. A modularização das funções e a automação com Makefile facilitaram bastante o desenvolvimento, tornando o código mais reutilizável e permitindo testes mais eficientes. Além disso, aprimoramos o setup do ambiente para garantir que todas as dependências fossem instaladas automaticamente.
+
+O suporte dos meus colegas foi essencial, especialmente na revisão e atualização do meu código, o que ajudou a aplicar boas práticas e estruturar melhor minhas implementações. O uso de ferramentas de SCM, como Git, foi fundamental para manter o controle das versões, permitindo que cada funcionalidade fosse desenvolvida em branches separadas e revisada antes da integração. Isso evitou conflitos e facilitou a colaboração, pois pude aprender com as alterações feitas pela equipe. No fim, além de aprimorar minhas habilidades técnicas, percebi o quanto uma gestão eficiente do código e a comunicação no time fazem a diferença no sucesso de um projeto."
 - **Member B:** "Write here."
 - **Member C:** "Write here."
 
