@@ -1,4 +1,4 @@
-name: Linting with cppcheck
+name: Linting with MISRA-C
 
 on: [push, pull_request]
 
@@ -12,6 +12,17 @@ jobs:
       - name: Install cppcheck
         run: sudo apt-get update && sudo apt-get install -y cppcheck
 
-      - name: Run cppcheck on C source files
+      - name: Download MISRA Addon Files
         run: |
-          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 --rule-checks=misc/misra sender.c receiver.c can_socket.h can_socket.c
+          wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.py
+          wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.json
+
+      - name: Run cppcheck with MISRA
+        run: |
+          cppcheck \
+            --addon=misra.json \
+            --enable=all \
+            --suppress=missingIncludeSystem \
+            --std=c99 \
+            --error-exitcode=1 \
+            sender.c receiver.c can_socket.h can_socket.c
