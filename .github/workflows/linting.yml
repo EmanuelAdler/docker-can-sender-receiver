@@ -24,4 +24,4 @@ jobs:
             --suppress=missingIncludeSystem \
             --std=c99 \
             --error-exitcode=1 \
-            sender.c receiver.c can_socket.h can_socket.c
+            *.c *.h
