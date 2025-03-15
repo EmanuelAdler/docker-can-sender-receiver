@@ -83,14 +83,15 @@ This ensures that every commit provides meaningful context and can be easily tra
 - **Initial Misconfigurations:** Some dependencies were missing in scripts, requiring updates.
 - **Docker/VCan Issues on WSL2:** Led to switching to VirtualBox for a stable environment.
 - **Code Organization:** Refactoring into modules helped maintainability.
+- **Automated testing:** Using a test framework helped improve code quality and save time.
 
 ### **Improvements Implemented:**
-- Write here.
+- Automated unit and integration testing.
+- Project organized in separated folders.
 
 ### **Reflections from Team Members:**
-- **Letícia Queiroz:** "Essa experiência foi completamente nova para mim, pois nunca tinha trabalhado com comunicação CAN e criptografia em software embarcado. No início, enfrentei desafios como a fragmentação das mensagens criptografadas e a organização do código, mas aos poucos fui compreendendo melhor a estrutura necessária. A modularização das funções e a automação com Makefile facilitaram bastante o desenvolvimento, tornando o código mais reutilizável e permitindo testes mais eficientes. Além disso, aprimoramos o setup do ambiente para garantir que todas as dependências fossem instaladas automaticamente.
-
-O suporte dos meus colegas foi essencial, especialmente na revisão e atualização do meu código, o que ajudou a aplicar boas práticas e estruturar melhor minhas implementações. O uso de ferramentas de SCM, como Git, foi fundamental para manter o controle das versões, permitindo que cada funcionalidade fosse desenvolvida em branches separadas e revisada antes da integração. Isso evitou conflitos e facilitou a colaboração, pois pude aprender com as alterações feitas pela equipe. No fim, além de aprimorar minhas habilidades técnicas, percebi o quanto uma gestão eficiente do código e a comunicação no time fazem a diferença no sucesso de um projeto."
+- **Paulo:** "Implementing unit and integration tests, along with GitHub Actions, improved my development process. Unit tests ensured each part worked correctly, while integration tests checked how they interacted. Automating everything with GitHub Actions saved time and caught issues. This experience showed me how testing makes code more reliable and deployments safer."
+- **Letícia Queiroz:** "This experience was completely new to me, as I had never worked with CAN communication and encryption in embedded software before. At first, I faced challenges such as the fragmentation of encrypted messages and code organization, but over time, I gradually gained a better understanding of the necessary structure. Modularizing functions and automating the process with Makefile significantly facilitated development, making the code more reusable and enabling more efficient testing. Additionally, we improved the environment setup to ensure that all dependencies were installed automatically."
 - **Member B:** "Write here."
 - **Member C:** "Write here."
 
