@@ -14,20 +14,32 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y build-essential libcunit1 libcunit1-doc libcunit1-dev lcov linux-modules-extra-$(uname -r)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libcunit1 libcunit1-doc libcunit1-dev lcov linux-modules-extra-$(uname -r)
 
       - name: Install can interface
         run: sudo ./setup_vcan.sh
-       
-      - name: Run make test
+
+      - name: Run tests and send in parallel
         run: |
           cd test
-          make test
+          # Start 'make test' in the background and capture its PID
+          make test &
+          TEST_PID=$!
 
-      - name: Wait for 1 second
-        run: sleep 1
+          # Wait 1 second before starting 'make send'
+          sleep 1
 
-      - name: Run make send
-        run: |
-          cd test
-          make send
+          # Start 'make send' in the background and capture its PID
+          make send &
+          SEND_PID=$!
+
+          # Wait for both processes to complete and check their exit status
+          wait $TEST_PID || TEST_FAILED=1
+          wait $SEND_PID || SEND_FAILED=1
+
+          # Fail the step if either command failed
+          if [ -n "${TEST_FAILED}" ] || [ -n "${SEND_FAILED}" ]; then
+            exit 1
+          fi
