@@ -90,7 +90,7 @@ This ensures that every commit provides meaningful context and can be easily tra
 ### **Reflections from Team Members:**
 - **Member A:** "Write here."
 - **Member B:** "Write here."
-- **Member C:** "Write here."
+- **Igor I.:** "In this project, I had my first collaborative experience using Git, GitHub, and Docker to manage parallel development. We implemented practices such as structured branching, pull requests with code reviews, and collaborative resolution of merge conflicts. My role focused on adapting functions to improve the project’s modularity, a critical factor in embedded systems to save some memory space and simplify the future implementation of the project."
 
 
 
