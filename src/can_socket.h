@@ -10,6 +10,8 @@
 #include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
+#include <openssl/aes.h>
+#include <openssl/evp.h>
 
 //define common functions for sender and receiver
 int create_can_socket(const char *interface);
@@ -21,4 +23,6 @@ int send_can_frame(int sock, struct can_frame *frame);
 //define function to receive one CAN frame
 int receive_can_frame(int sock, struct can_frame *frame);
 
+void encrypt_data(const unsigned char *input, unsigned char *output);
+void decrypt_data(const unsigned char *input, char *output);
 #endif
