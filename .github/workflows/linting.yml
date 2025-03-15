@@ -6,24 +6,16 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cppcheck python3 python3-pip
-          pip3 install pycparser
+      - name: Install cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck python3 python3-pip
 
       - name: Download MISRA Addon Script
-        run: |
-          wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.py
+        run: wget https://raw.githubusercontent.com/danmar/cppcheck/main/addons/misra.py
 
-      - name: Generate Dump Files
+      - name: Run cppcheck with MISRA rules
         run: |
-          dir
-          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 --dump *.c *.h
-
-      - name: Run MISRA Addon
-        run: |
+          cppcheck --addon=misra.py --enable=all --suppress=missingIncludeSystem --std=c99 --dump *.c *.h
           python3 misra.py --rule-texts=misra.txt *.dump
