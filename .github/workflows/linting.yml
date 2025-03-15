@@ -14,4 +14,4 @@ jobs:
 
       - name: Run cppcheck on C source files
         run: |
-          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 sender.c receiver.c
+          cppcheck --enable=all --suppress=missingIncludeSystem --std=c99 --rule-checks=misc/misra sender.c receiver.c can_socket.h can_socket.c
