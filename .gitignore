@@ -1,0 +1,16 @@
+# Ignore compiled binaries and build artifacts
+bin/
+build/
+*.o
+*.out
+*.exe
+
+# Ignore editor and temporary files
+.vscode/
+.idea/
+*.swp
+
+# Ignore log and backup files
+*.log
+*.tmp
+*.bak
