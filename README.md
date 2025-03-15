@@ -26,6 +26,26 @@ Check the running containers:
 ```sh
 docker ps
 ```
+## CI/CD Pipeline
+
+### Linting Workflow
+- **Tool:** cppcheck is used to perform static analysis on `sender.c` and `receiver.c`.
+- **Configuration:** We run cppcheck with `--enable=all --suppress=missingIncludeSystem --std=c99`.
+- **Trigger:** This workflow runs on every push and pull request to ensure code quality.
+
+### Docker Build & Deployment Workflow
+- **Build Process:**  
+  The Dockerfile compiles the CAN applications from `sender.c` and `receiver.c`.
+- **Tagging:**  
+  Images are tagged as `latest` on the `main`/`develop` branches and also tagged with the Git version (e.g., `v1.0.0`) when version tags are pushed.
+- **Deployment:**  
+  The built images are pushed to Docker Hub. Ensure your Docker Hub credentials are configured in GitHub Secrets (`DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`).
+
+### Virtual CAN Interface Setup
+Before running the Docker containers locally, set up the virtual CAN interface by running:
+```bash
+sudo bash setup_vcan.sh
+```
 
 ## Communication Test
 Send a CAN frame:
