@@ -12,7 +12,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y cppcheck
 
     - name: Lint Sender
-      run: cppcheck --enable=all --addon=misra.json --error-exitcode=1 sender.c
+      run: cppcheck --enable=all --addon=misra.json --suppress=missingIncludeSystem --error-exitcode=1 sender.c
 
     - name: Lint Receiver
       run: cppcheck --enable=all --addon=misra.json --error-exitcode=1 receiver.c

@@ -1,0 +1,10 @@
+{
+    "predefinedMacros": {
+      "PF_CAN": 29,
+      "SOCK_RAW": 3,
+      "CAN_RAW": 1,
+      "SIOCGIFINDEX": 0x8933,
+      "SOL_CAN_RAW": 101,
+      "CAN_RAW_FILTER": 1
+    }
+  }
