@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -Wextra -D_GNU_SOURCE
 BIN_DIR = ../bin
 SRC_DIR = .
 OBJ = $(BIN_DIR)/can_socket.o
