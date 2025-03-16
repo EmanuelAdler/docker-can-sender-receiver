@@ -7,7 +7,6 @@
 #include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
-#include <linux/if.h>
 #include "can_socket.h"
 
 #define SOCKET_ERROR         (-1)

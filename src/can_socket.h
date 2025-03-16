@@ -1,6 +1,8 @@
 #ifndef CAN_SOCKET_H
 #define CAN_SOCKET_H
 
+#include <openssl/aes.h>
+#include <openssl/evp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,8 +12,6 @@
 #include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
-#include <openssl/aes.h>
-#include <openssl/evp.h>
 
 #define AES_BLOCK_SIZE 16
 
