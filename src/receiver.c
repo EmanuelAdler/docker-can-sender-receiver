@@ -22,9 +22,9 @@ void process_received_frame(int sock) {
                 received_bytes += 8;
 
                 if (received_bytes == AES_BLOCK_SIZE) {
-                    decrypt_data(encrypted_data, decrypted_message);
-                    decrypted_message[AES_BLOCK_SIZE - 1] = '\0';
+                    decrypt_data(encrypted_data, decrypted_message, received_bytes);
                     printf("Decrypted message: %s\n", decrypted_message);
+                    fflush(stdout);
                     received_bytes = 0;
                 }
             } else {
