@@ -40,12 +40,6 @@ docker ps
 - **Deployment:**  
   The built images are pushed to Docker Hub.
 
-### Virtual CAN Interface Setup
-Before running the Docker containers locally, set up the virtual CAN interface by running:
-```bash
-sudo bash setup_vcan.sh
-```
-
 ## Communication Test
 Send a CAN frame:
 ```sh
