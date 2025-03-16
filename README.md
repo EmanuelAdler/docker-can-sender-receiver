@@ -4,7 +4,6 @@ This project consists of a simple application for communication between a sender
 ## Requirements  
 - Ubuntu or another Linux system compatible with SocketCAN
 - Docker  
-- Configured `vcan0` interface  
 
 ## CAN Interface Setup  
 Give execution permission to the script:  
@@ -26,6 +25,20 @@ Check the running containers:
 ```sh
 docker ps
 ```
+## CI/CD Pipeline
+
+### Linting Workflow
+- **Tool:** Clang-Tidy is used to perform static analysis on `sender.c` and `receiver.c`.
+- **Configuration:** We run Clang-Tidy with `--std=c99`.
+- **Trigger:** This workflow runs on every pull request to ensure code quality.
+
+### Docker Build & Deployment Workflow
+- **Build Process:**  
+  The Dockerfile compiles the CAN applications from `sender.c` and `receiver.c`.
+- **Tagging:**  
+  Images are tagged as `latest` on the `main`/`develop` branches and also tagged with the Git version (e.g., `v1.0.0`) when version tags are pushed.
+- **Deployment:**  
+  The built images are pushed to Docker Hub.
 
 ## CI/CD Pipeline
 
