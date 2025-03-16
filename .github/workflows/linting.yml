@@ -1,6 +1,6 @@
 name: MISRA-C Linting with Clang-Tidy
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   lint:

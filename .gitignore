@@ -4,6 +4,7 @@ build/
 *.o
 *.out
 *.exe
+test/obj/
 
 # Ignore editor and temporary files
 .vscode/

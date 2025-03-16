@@ -87,14 +87,9 @@ Our project utilizes GitHub Actions to automate various aspects of development a
 - **Docker Build Problems:** Verify that your `Dockerfile` and `docker-compose.yml` are correctly configured and that all necessary files are included in the build context.
 
 ## Communication Test
-Send a CAN frame:
+Send a message via CAN:
 ```sh
-docker exec ./bin/sender cansend vcan0 123#DEADBEEF
-```
-
-View the received messages:
-```sh
-docker exec .bin/receiver candump vcan0
+echo "message" | docker exec -i sender sh -c 'cat > /tmp/can_pipe'
 ```
 
 To stop the containers:
@@ -103,9 +98,9 @@ docker-compose down
 ```
 
 ## Source code testing
-Install the Cunit library and lcov for testing:
+Install the required libraries for testing:
 ```sh
-sudo apt-get install libcunit1 libcunit1-doc libcunit1-dev lcov
+sudo apt-get install libssl-dev libcunit1 libcunit1-doc libcunit1-dev lcov
 ```
 Then, in the test folder run:
 ```sh
@@ -115,8 +110,3 @@ or
 ```sh
 make coverage
 ```
-Then, open another terminal in the same folder and run:
-```sh
-make send
-```
-to test the function that receives a CAN frame.

@@ -1,19 +1,12 @@
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <linux/can.h>
-#include <linux/can/raw.h>
-#include <linux/if.h>
 #include "can_socket.h"
 
 #define SOCKET_ERROR         (-1)
 #define OPERATION_SUCCESS    (0)
 #define MAX_INTERFACE_LEN    (IFNAMSIZ - 1U)
 #define CAN_FRAME_SIZE       (sizeof(struct can_frame))
+
+const unsigned char AES_USER_KEY[16] = "0123456789abcdef";
+const unsigned char AES_USER_IV[16] = "abcdef9876543210";  
 
 static int validate_interface(const char *interface)
 {
@@ -104,6 +97,58 @@ int receive_can_frame(int sock, struct can_frame *frame)
         (void)fprintf(stderr, "Incomplete frame received\n");
         return SOCKET_ERROR;
     }
-    
+  
     return OPERATION_SUCCESS;
+}
+
+void encrypt_data(const unsigned char *input, unsigned char *output, int *output_len) 
+{
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    int len = 0;
+    int ciphertext_len = 0;
+
+    EVP_EncryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, AES_USER_KEY, AES_USER_IV);
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
+    EVP_EncryptUpdate(ctx, output, &len, input, AES_BLOCK_SIZE);
+    ciphertext_len = len;
+
+    if (!EVP_EncryptFinal_ex(ctx, output + len, &len)) 
+    {
+        (void)fprintf(stderr, "Error in EVP_EncryptFinal_ex\n");
+    }
+    ciphertext_len += len;
+
+    EVP_CIPHER_CTX_free(ctx);
+
+    *output_len = ciphertext_len;
+}
+
+void decrypt_data(const unsigned char *input, char *output, int input_len) 
+{
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    int len = 0;
+    int plaintext_len = 0;
+    
+    memset(output, 0, AES_BLOCK_SIZE);
+
+    EVP_DecryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, AES_USER_KEY, AES_USER_IV);
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
+    if (!EVP_DecryptUpdate(ctx, (unsigned char*)output, &len, input, input_len)) 
+    {
+        (void)fprintf(stderr, "Error in EVP_DecryptUpdate\n");
+    }
+    plaintext_len = len;
+
+    int ret = EVP_DecryptFinal_ex(ctx, (unsigned char*)output + len, &len);
+    if (ret <= 0) 
+    {
+        (void)fprintf(stderr, "Error in EVP_DecryptFinal_ex\n");
+    }
+
+    plaintext_len += len;
+    EVP_CIPHER_CTX_free(ctx);
+
+    output[plaintext_len] = '\0';
 }

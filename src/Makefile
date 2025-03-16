@@ -1,8 +1,9 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -Wextra -D_GNU_SOURCE
 BIN_DIR = ../bin
 SRC_DIR = .
 OBJ = $(BIN_DIR)/can_socket.o
+LDLFLAGS = -lssl -lcrypto
 
 # Executables
 TARGETS = $(BIN_DIR)/sender $(BIN_DIR)/receiver
@@ -24,10 +25,10 @@ $(BIN_DIR)/receiver.o: $(SRC_DIR)/receiver.c $(SRC_DIR)/can_socket.h
 
 # Build rules for executables
 $(BIN_DIR)/sender: $(BIN_DIR)/sender.o $(OBJ)
-	$(CC) $(CFLAGS) $(BIN_DIR)/sender.o $(OBJ) -o $(BIN_DIR)/sender
+	$(CC) $(CFLAGS) $(BIN_DIR)/sender.o $(OBJ) -o $(BIN_DIR)/sender $(LDLFLAGS)
 
 $(BIN_DIR)/receiver: $(BIN_DIR)/receiver.o $(OBJ)
-	$(CC) $(CFLAGS) $(BIN_DIR)/receiver.o $(OBJ) -o $(BIN_DIR)/receiver
+	$(CC) $(CFLAGS) $(BIN_DIR)/receiver.o $(OBJ) -o $(BIN_DIR)/receiver $(LDLFLAGS)
 
 # Clean command
 clean:
