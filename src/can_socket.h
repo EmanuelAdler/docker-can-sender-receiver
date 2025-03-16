@@ -12,6 +12,7 @@
 #include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
+#include <linux/if.h>
 
 #define AES_BLOCK_SIZE 16
 
