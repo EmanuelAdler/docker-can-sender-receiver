@@ -28,7 +28,7 @@ docker ps
 ## CI/CD Pipeline
 
 ### Linting Workflow
-- **Tool:** Clang-Tidy is used to perform static analysis on `sender.c` and `receiver.c`.
+- **Tool:** Clang-Tidy is used to perform static analysis on project files.
 - **Configuration:** We run Clang-Tidy with `--std=c99`.
 - **Trigger:** This workflow runs on every pull request to ensure code quality.
 
@@ -55,11 +55,9 @@ Our project utilizes GitHub Actions to automate various aspects of development a
 **Key Steps:**
 - **Add "triage" Label:** Uses the `actions/github-script` action to add the "triage" label to new issues.
 
-**Note:** Ensure that the `GH_PAT` (GitHub Personal Access Token) secret is configured in your repository settings to authorize labeling.
-
 ### 2. Linting Workflow
 
-**Purpose:** Ensures code quality by performing static analysis on `sender.c` and `receiver.c` using `cppcheck`.
+**Purpose:** Ensures code quality by performing static analysis on project files using `Clang-Tidy`.
 
 **Workflow File:** `.github/workflows/linting.yml`
 
@@ -67,10 +65,8 @@ Our project utilizes GitHub Actions to automate various aspects of development a
 
 **Key Steps:**
 - **Checkout Code:** Retrieves the latest code from the repository.
-- **Install cppcheck:** Installs the `cppcheck` tool on the runner.
-- **Run cppcheck:** Executes `cppcheck` with MISRA-C compliance settings to analyze the C source files. The workflow is configured to fail if any issues are detected (`--error-exitcode=1`).
-
-**Note:** Customize the `cppcheck` command as needed, especially if you have a specific MISRA-C rule file.
+- **Install Clang-Tidy:** Installs the `Clang-Tidy` tool on the runner.
+- **Run Clang-Tidy:** Executes `Clang-Tidy` with MISRA-C compliance settings to analyze the C source files. The workflow is configured to fail if any issues are detected (`--error-exitcode=1`).
 
 ### 3. Docker Build and Push Workflow
 
@@ -84,20 +80,11 @@ Our project utilizes GitHub Actions to automate various aspects of development a
 
 **Key Steps:**
 - **Checkout Code:** Retrieves the latest code from the repository.
-- **Set up QEMU:** Prepares the environment for cross-platform Docker builds.
 - **Set up Docker Buildx:** Initializes Docker Buildx for advanced build capabilities.
 - **Log in to Docker Hub:** Authenticates to Docker Hub using credentials stored in repository secrets (`DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`).
 - **Build and Push Docker Image:** Builds the Docker image and pushes it to Docker Hub with appropriate tags:
   - `latest` for the `main` and `develop` branches.
   - The specific Git reference name (e.g., branch name or tag).
-
-**Note:** Replace `yourdockerhubusername/yourimagename` with your actual Docker Hub username and desired image name.
-
-## Troubleshooting Tips
-
-- **Permissions Issues:** Ensure that all necessary secrets (e.g., `GH_PAT`, `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`) are correctly configured in your repository settings.
-- **Workflow Failures:** Review the logs provided by GitHub Actions to identify and address any errors. Common issues include syntax errors in workflow files or missing dependencies.
-- **Docker Build Problems:** Verify that your `Dockerfile` and `docker-compose.yml` are correctly configured and that all necessary files are included in the build context.
 
 ## Communication Test
 Send a message via CAN:
