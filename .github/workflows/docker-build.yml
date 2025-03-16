@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Images
 
 on:
   push:
@@ -24,11 +24,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: |
-            emanueladler/can-sender-receiver:latest
-            emanueladler/can-sender-receiver:${{ github.ref_name }}
+      - name: Build Sender and Receiver Images
+        run: |
+          docker build -t emanueladler/can-sender:${{ github.ref_name }} -f sender/Dockerfile .
+          docker build -t emanueladler/can-receiver:${{ github.ref_name }} -f receiver/Dockerfile .
+
+      - name: Push Images to Docker Hub
+        run: |
+          docker push emanueladler/can-sender:${{ github.ref_name }}
+          docker push emanueladler/can-receiver:${{ github.ref_name }}
+
+      - name: Test Docker Compose
+        run: |
+          docker-compose up -d
+          sleep 20
+          docker ps
+          docker-compose down
+
