@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libcunit1 libcunit1-doc libcunit1-dev lcov linux-modules-extra-$(uname -r)
+          sudo apt-get install -y build-essential can-utils libcunit1 libcunit1-doc libcunit1-dev lcov linux-modules-extra-$(uname -r)
 
       - name: Install can interface
         run: sudo ./setup_vcan.sh
