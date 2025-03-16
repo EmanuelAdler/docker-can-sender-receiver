@@ -10,6 +10,7 @@
 #define CAN_INTERFACE ("vcan0")
 #define CAN_ID        (0x123U)
 #define CAN_DLC       (8U)
+#define CAN_MAX_PAD   (16U)
 #define PERMISSIONS   (0666)
 #define FIFO_PATH "/tmp/can_pipe"
 
@@ -18,7 +19,7 @@ void send_encrypted_message(int sock, const char *message)
     struct can_frame frame;
     unsigned char encrypted_data[AES_BLOCK_SIZE] = {0};
 
-    char padded_message[AES_BLOCK_SIZE + 16] = {0};
+    char padded_message[AES_BLOCK_SIZE + CAN_MAX_PAD] = {0};
     int encrypted_len = 0;
     strncpy(padded_message, message, AES_BLOCK_SIZE);
 
