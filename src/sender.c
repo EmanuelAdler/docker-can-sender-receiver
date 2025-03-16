@@ -1,14 +1,22 @@
 #include "can_socket.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
+#define CAN_INTERFACE ("vcan0")
+#define NUM_SENDS     (5U)
+#define SLEEP_TIME    (5U)
+#define CAN_ID        (0x123U)
+#define CAN_DLC       (8U)
+#define DATA_STRING   "Hi CAN"
 #define FIFO_PATH "/tmp/can_pipe"
 
-void send_encrypted_message(int sock, const char *message) {
+void send_encrypted_message(int sock, const char *message) 
+{
     struct can_frame frame;
     unsigned char encrypted_data[AES_BLOCK_SIZE] = {0};
 
@@ -18,7 +26,8 @@ void send_encrypted_message(int sock, const char *message) {
 
     encrypt_data((unsigned char*)padded_message, encrypted_data, &encrypted_len);
 
-    if (encrypted_len != AES_BLOCK_SIZE) {
+    if (encrypted_len != AES_BLOCK_SIZE) 
+    {
         printf("Unexpected encrypted data length: %d\n", encrypted_len);
         fflush(stdout);
         return;
@@ -34,9 +43,14 @@ void send_encrypted_message(int sock, const char *message) {
     send_can_frame(sock, &frame);
 }
 
-int main() {
-    int sock = create_can_socket("vcan0");
-    if (sock < 0) return 1;
+int main(void) 
+{
+    int sock = -1;  
+    sock = create_can_socket(CAN_INTERFACE);
+    if (sock < 0)
+    {
+        return EXIT_FAILURE;
+    }
 
     mkfifo(FIFO_PATH, 0666);
 
@@ -45,9 +59,11 @@ int main() {
 
     printf("Type a message to send (max 16 chars) or 'exit' to terminate:\n");
 
-    while (1) {
+    for(;;) 
+    {
         fifo_fd = open(FIFO_PATH, O_RDONLY);
-        if (fifo_fd < 0) {
+        if (fifo_fd < 0) 
+        {
             perror("Errror opening FIFO");
             continue;
         }
@@ -55,20 +71,22 @@ int main() {
         memset(input, 0, sizeof(input));
         read(fifo_fd, input, AES_BLOCK_SIZE);
         close(fifo_fd);
-        printf("%s\n", input);
-        fflush(stdout);
+        (void)printf("%s\n", input);
+        (void)fflush(stdout);
 
-        if (strcmp(input, "exit") == 0) {
-            printf("Exiting sender.\n");
+        if (strcmp(input, "exit") == 0)
+        {
+            (void)printf("Exiting sender.\n");
             break;
         }
-        if (strcmp(input, "") != 0) {
+        if (strcmp(input, "") != 0) 
+        {
             send_encrypted_message(sock, input);
         }
     }
 
     close_can_socket(sock);
     unlink(FIFO_PATH);
-    printf("Sender terminated successfully.\n");
-    return 0;
+    (void)printf("Sender terminated successfully.\n");
+    return EXIT_SUCCESS;
 }

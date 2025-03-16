@@ -1,48 +1,67 @@
 #include "can_socket.h"
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-void process_received_frame(int sock) {
+#define CAN_INTERFACE      ("vcan0")
+#define SUCCESS_CODE       (0)
+#define ERROR_CODE         (1)
+
+void process_received_frame(int sock) 
+{
     struct can_frame frame;
     unsigned char encrypted_data[AES_BLOCK_SIZE];
     char decrypted_message[AES_BLOCK_SIZE];
     int received_bytes = 0;
 
-    while (1) {
-        if (receive_can_frame(sock, &frame) == 0) {
-            printf("Received CAN ID: %X Data: ", frame.can_id);
-            for (int i = 0; i < frame.can_dlc; i++) {
-                printf("%02X ", frame.data[i]);
+    for(;;)
+    {
+        if (receive_can_frame(sock, &frame) == 0) 
+        {
+            (void)printf("Received CAN ID: %X Data: ", frame.can_id);
+            for (int i = 0; i < frame.can_dlc; i++)
+            {
+                (void)printf("%02X ", frame.data[i]);
             }
-            printf("\n");
-            fflush(stdout);
+            (void)printf("\n");
+            (void)fflush(stdout);
 
-            if (frame.can_dlc == 8) {
+            if (frame.can_dlc == 8) 
+            {
                 memcpy(encrypted_data + received_bytes, frame.data, 8);
                 received_bytes += 8;
 
-                if (received_bytes == AES_BLOCK_SIZE) {
+                if (received_bytes == AES_BLOCK_SIZE) 
+                {
                     decrypt_data(encrypted_data, decrypted_message, received_bytes);
-                    printf("Decrypted message: %s\n", decrypted_message);
-                    fflush(stdout);
+                    (void)printf("Decrypted message: %s\n", decrypted_message);
+                    (void)fflush(stdout);
                     received_bytes = 0;
                 }
-            } else {
-                printf("⚠️ Warning: Unexpected frame size (%d bytes). Ignoring.\n", frame.can_dlc);
+            } 
+            else 
+            {
+                (void)printf("⚠️ Warning: Unexpected frame size (%d bytes). Ignoring.\n", frame.can_dlc);
             }
         }
     }
 }
 
-int main() {
-    int sock = create_can_socket("vcan0");
-    if (sock < 0) return 1;
+int main(void) 
+{
+    int sock = -1;
+    sock = create_can_socket(CAN_INTERFACE);
+    if (sock < 0)
+    {
+        return ERROR_CODE;
+    }
 
-    printf("Listening for CAN frames...\n");
+    (void)printf("Listening for CAN frames...\n");
+    (void)fflush(stdout);
 
-    // Receive CAN frame
     process_received_frame(sock);
 
     close_can_socket(sock);
-    return 0;
+    return SUCCESS_CODE;
 }

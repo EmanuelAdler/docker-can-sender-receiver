@@ -83,14 +83,17 @@ This ensures that every commit provides meaningful context and can be easily tra
 - **Initial Misconfigurations:** Some dependencies were missing in scripts, requiring updates.
 - **Docker/VCan Issues on WSL2:** Led to switching to VirtualBox for a stable environment.
 - **Code Organization:** Refactoring into modules helped maintainability.
+- **Automated testing:** Using a test framework helped improve code quality and save time.
 
 ### **Improvements Implemented:**
-- Write here.
+- Automated unit and integration testing.
+- Project organized in separated folders.
 
 ### **Reflections from Team Members:**
-- **Member A:** "Write here."
+- **Paulo:** "Implementing unit and integration tests, along with GitHub Actions, improved my development process. Unit tests ensured each part worked correctly, while integration tests checked how they interacted. Automating everything with GitHub Actions saved time and caught issues. This experience showed me how testing makes code more reliable and deployments safer."
+- **Letícia Queiroz:** "This experience was completely new to me, as I had never worked with CAN communication and encryption in embedded software before. At first, I faced challenges such as the fragmentation of encrypted messages and code organization, but over time, I gradually gained a better understanding of the necessary structure. Modularizing functions and automating the process with Makefile significantly facilitated development, making the code more reusable and enabling more efficient testing. Additionally, we improved the environment setup to ensure that all dependencies were installed automatically."
 - **Member B:** "Write here."
-- **Member C:** "Write here."
+- **Igor I.:** "In this project, I had my first collaborative experience using Git, GitHub, and Docker to manage parallel development. We implemented practices such as structured branching, pull requests with code reviews, and collaborative resolution of merge conflicts. My role focused on adapting functions to improve the project’s modularity, a critical factor in embedded systems to save some memory space and simplify the future implementation of the project."
 
 
 
