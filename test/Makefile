@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g --coverage
-LDFLAGS = -lcunit --coverage
+LDFLAGS = -lcunit -lssl -lcrypto --coverage
 
 SRC = ../src/can_socket.c test_can_socket.c
 SEND_SRC = ../src/sender.c
