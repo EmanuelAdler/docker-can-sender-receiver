@@ -33,7 +33,7 @@ int main() {
     int sock = create_can_socket("vcan0");
     if (sock < 0) return 1;
 
-    char input[AES_BLOCK_SIZE + 1];
+    char input[AES_BLOCK_SIZE + 1] = "";
 
     printf("Type a message to send (max 16 chars) or 'exit' to terminate:\n");
 
@@ -43,7 +43,10 @@ int main() {
             printf("Exiting sender.\n");
             break;
         }
-        send_encrypted_message(sock, input);
+        if (strcmp(input, "") != 0) {
+            send_encrypted_message(sock, input);
+            strncpy(input, "", AES_BLOCK_SIZE);
+        }
     }
 
     close_can_socket(sock);
