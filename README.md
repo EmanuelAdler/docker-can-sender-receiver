@@ -1,6 +1,8 @@
 # Docker CAN Project  
 This project consists of a simple application for communication between a sender and a receiver over a virtual CAN network.
 
+[![Build and Push Docker Image](https://github.com/EmanuelAdler/docker-can-sender-receiver/actions/workflows/docker-build.yml/badge.svg)](https://github.com/EmanuelAdler/docker-can-sender-receiver/actions/workflows/docker-build.yml)
+
 ## Requirements  
 - Ubuntu or another Linux system compatible with SocketCAN
 - Docker  
