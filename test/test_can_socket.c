@@ -15,6 +15,10 @@
 #define DATA_0  (0XABU)
 #define DATA_1  (0xCDU)
 
+#define MESSAGE_DELAY_SEC (1U)
+#define RETRY_DELAY_SEC   (1U)
+#define WAIT_ITERATIONS   (5U)
+
 static int init_suite(void) 
 { 
     return 0; 
@@ -35,7 +39,8 @@ typedef struct {
 void* receiver_thread(void* arg) {
     receiver_data_t* data = (receiver_data_t*) arg;
     
-    if (receive_can_frame(data->sock, &data->received_frame) == 0) {
+    if (receive_can_frame(data->sock, &data->received_frame) == 0)
+    {
         data->received = 1;
     }
     
@@ -54,11 +59,17 @@ static void test_send_receive_can_frame(void)
     // Create socket CAN
     sock = create_can_socket(TEST_INTERFACE);
     CU_ASSERT(sock >= 0);
-    if (sock < 0) return;
+    if (sock < 0) 
+    {
+        return;
+    }
 
     sock2 = create_can_socket(TEST_INTERFACE);
     CU_ASSERT(sock2 >= 0);
-    if (sock2 < 0) return;
+    if (sock2 < 0) 
+    {
+        return;
+    }
 
     // Initialize receptor struct
     recv_data.sock = sock2;
@@ -67,7 +78,7 @@ static void test_send_receive_can_frame(void)
 
     // Create receptor thread
     pthread_create(&recv_thread, NULL, receiver_thread, &recv_data);
-    usleep(500000);
+    sleep(MESSAGE_DELAY_SEC);
 
     // Create and send CAN message
     memset(&frame, 0, sizeof(struct can_frame));
@@ -78,9 +89,10 @@ static void test_send_receive_can_frame(void)
     
     CU_ASSERT(send_can_frame(sock, &frame) == 0);
 
-    int wait_time = 50;
-    while (wait_time-- > 0 && recv_data.received == 0) {
-        usleep(100000);
+    int wait_time = WAIT_ITERATIONS;
+    while (wait_time-- > 0 && recv_data.received == 0)
+    {
+        sleep(RETRY_DELAY_SEC);
     }
 
     // Validate if message was received
