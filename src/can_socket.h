@@ -15,8 +15,8 @@
 
 #define AES_BLOCK_SIZE 16
 
-const unsigned char AES_USER_KEY[16] = "0123456789abcdef";
-const unsigned char AES_USER_IV[16] = "abcdef9876543210";
+extern const unsigned char AES_USER_KEY[AES_BLOCK_SIZE];
+extern const unsigned char AES_USER_IV[AES_BLOCK_SIZE];
 
 //define common functions for sender and receiver
 int create_can_socket(const char *interface);
