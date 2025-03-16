@@ -8,11 +8,9 @@
 #include <unistd.h>
 
 #define CAN_INTERFACE ("vcan0")
-#define NUM_SENDS     (5U)
-#define SLEEP_TIME    (5U)
 #define CAN_ID        (0x123U)
 #define CAN_DLC       (8U)
-#define DATA_STRING   "Hi CAN"
+#define PERMISSIONS   (0666)
 #define FIFO_PATH "/tmp/can_pipe"
 
 void send_encrypted_message(int sock, const char *message) 
@@ -33,13 +31,13 @@ void send_encrypted_message(int sock, const char *message)
         return;
     }
 
-    frame.can_id = 0x123;
-    frame.can_dlc = 8;
-    memcpy(frame.data, encrypted_data, 8);
+    frame.can_id = CAN_ID;
+    frame.can_dlc = CAN_DLC;
+    memcpy(frame.data, encrypted_data, CAN_DLC);
     send_can_frame(sock, &frame);
 
-    frame.can_dlc = 8;
-    memcpy(frame.data, encrypted_data + 8, 8);
+    frame.can_dlc = CAN_DLC;
+    memcpy(frame.data, encrypted_data + CAN_DLC, CAN_DLC);
     send_can_frame(sock, &frame);
 }
 
@@ -52,7 +50,7 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    mkfifo(FIFO_PATH, 0666);
+    mkfifo(FIFO_PATH, PERMISSIONS);
 
     char input[AES_BLOCK_SIZE + 1];
     int fifo_fd;

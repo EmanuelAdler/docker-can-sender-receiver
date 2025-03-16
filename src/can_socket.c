@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <linux/can.h>
@@ -113,7 +114,8 @@ int receive_can_frame(int sock, struct can_frame *frame)
 void encrypt_data(const unsigned char *input, unsigned char *output, int *output_len) 
 {
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
-    int len = 0, ciphertext_len = 0;
+    int len = 0;
+    int ciphertext_len = 0;
 
     EVP_EncryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, AES_USER_KEY, AES_USER_IV);
     EVP_CIPHER_CTX_set_padding(ctx, 0);
@@ -135,7 +137,8 @@ void encrypt_data(const unsigned char *input, unsigned char *output, int *output
 void decrypt_data(const unsigned char *input, char *output, int input_len) 
 {
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
-    int len = 0, plaintext_len = 0;
+    int len = 0;
+    int plaintext_len = 0;
     
     memset(output, 0, AES_BLOCK_SIZE);
 

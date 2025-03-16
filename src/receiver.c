@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define CAN_INTERFACE      ("vcan0")
+#define CAN_DATA_LENGTH    (8)
 #define SUCCESS_CODE       (0)
 #define ERROR_CODE         (1)
 
@@ -27,10 +28,10 @@ void process_received_frame(int sock)
             (void)printf("\n");
             (void)fflush(stdout);
 
-            if (frame.can_dlc == 8) 
+            if (frame.can_dlc == CAN_DATA_LENGTH) 
             {
-                memcpy(encrypted_data + received_bytes, frame.data, 8);
-                received_bytes += 8;
+                memcpy(encrypted_data + received_bytes, frame.data, CAN_DATA_LENGTH);
+                received_bytes += CAN_DATA_LENGTH;
 
                 if (received_bytes == AES_BLOCK_SIZE) 
                 {
