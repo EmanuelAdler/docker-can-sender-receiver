@@ -1,3 +1,4 @@
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,6 +25,78 @@ static int clean_suite(void)
     return 0; 
 }
 
+// Struct to store receptor data
+typedef struct {
+    int sock;
+    struct can_frame received_frame;
+    int received;
+} receiver_data_t;
+
+void* receiver_thread(void* arg) {
+    receiver_data_t* data = (receiver_data_t*) arg;
+    
+    if (receive_can_frame(data->sock, &data->received_frame) == 0) {
+        data->received = 1;
+    }
+    
+    return NULL;
+}
+
+/* Integration test */
+static void test_send_receive_can_frame(void) 
+{
+    int sock = -1;
+    int sock2 = -1;
+    struct can_frame frame;
+    pthread_t recv_thread;
+    receiver_data_t recv_data;
+
+    // Create socket CAN
+    sock = create_can_socket(TEST_INTERFACE);
+    CU_ASSERT(sock >= 0);
+    if (sock < 0) return;
+
+    sock2 = create_can_socket(TEST_INTERFACE);
+    CU_ASSERT(sock2 >= 0);
+    if (sock2 < 0) return;
+
+    // Initialize receptor struct
+    recv_data.sock = sock2;
+    recv_data.received = 0;
+    memset(&recv_data.received_frame, 0, sizeof(struct can_frame));
+
+    // Create receptor thread
+    pthread_create(&recv_thread, NULL, receiver_thread, &recv_data);
+    usleep(500000);
+
+    // Create and send CAN message
+    memset(&frame, 0, sizeof(struct can_frame));
+    frame.can_id = CAN_ID;
+    frame.can_dlc = CAN_DLC;
+    frame.data[0] = DATA_0;
+    frame.data[1] = DATA_1;
+    
+    CU_ASSERT(send_can_frame(sock, &frame) == 0);
+
+    int wait_time = 50;
+    while (wait_time-- > 0 && recv_data.received == 0) {
+        usleep(100000);
+    }
+
+    // Validate if message was received
+    CU_ASSERT(recv_data.received == 1);
+    CU_ASSERT(recv_data.received_frame.can_id == CAN_ID);
+    CU_ASSERT(recv_data.received_frame.can_dlc == CAN_DLC);
+    CU_ASSERT(recv_data.received_frame.data[0] == DATA_0);
+    CU_ASSERT(recv_data.received_frame.data[1] == DATA_1);
+
+    // Finish receptor thread
+    pthread_join(recv_thread, NULL);
+
+    close_can_socket(sock);
+    close_can_socket(sock2);
+}
+
 static void test_create_can_socket(void) 
 {
     int sock = -1;
@@ -40,32 +113,6 @@ static void test_create_can_socket_invalid(void)
 {
     const int sock = create_can_socket(INVALID_INTERFACE);
     CU_ASSERT(sock == -1);
-}
-
-/* Integration test */
-static void test_send_receive_can_frame(void) 
-{
-    int sock = -1;
-    struct can_frame frame;
-    struct can_frame received_frame;
-    
-    sock = create_can_socket(TEST_INTERFACE);
-    CU_ASSERT(sock >= 0);
-    if (sock < 0) 
-    {
-        return;
-    }
-
-    (void)memset(&frame, 0, sizeof(frame));
-    frame.can_id = CAN_ID;
-    frame.can_dlc = CAN_DLC;
-    frame.data[0] = DATA_0;
-    frame.data[1] = DATA_1;
-
-    CU_ASSERT(send_can_frame(sock, &frame) == 0);
-    CU_ASSERT(receive_can_frame(sock, &received_frame) == 0);
-
-    close_can_socket(sock);
 }
 
 static void test_close_can_socket(void) 

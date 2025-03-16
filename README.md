@@ -98,9 +98,9 @@ docker-compose down
 ```
 
 ## Source code testing
-Install the Cunit library and lcov for testing:
+Install the required libraries for testing:
 ```sh
-sudo apt-get install libcunit1 libcunit1-doc libcunit1-dev lcov
+sudo apt-get install libssl-dev libcunit1 libcunit1-doc libcunit1-dev lcov
 ```
 Then, in the test folder run:
 ```sh
@@ -110,8 +110,3 @@ or
 ```sh
 make coverage
 ```
-Then, open another terminal in the same folder and run:
-```sh
-make send
-```
-to test the function that receives a CAN frame.

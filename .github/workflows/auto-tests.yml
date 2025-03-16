@@ -24,22 +24,4 @@ jobs:
       - name: Run tests and send in parallel
         run: |
           cd test
-          # Start 'make test' in the background and capture its PID
-          make test &
-          TEST_PID=$!
-
-          # Wait 1 second before starting 'make send'
-          sleep 1
-
-          # Start 'make send' in the background and capture its PID
-          make send &
-          SEND_PID=$!
-
-          # Wait for both processes to complete and check their exit status
-          wait $TEST_PID || TEST_FAILED=1
-          wait $SEND_PID || SEND_FAILED=1
-
-          # Fail the step if either command failed
-          if [ -n "${TEST_FAILED}" ] || [ -n "${SEND_FAILED}" ]; then
-            exit 1
-          fi
+          make test
