@@ -1,13 +1,15 @@
 version: '3'
 services:
   can_sender:
+    image: emanueladler/can-sender:latest
     build: .
     container_name: sender
     network_mode: "host"
-    command: ["./sender"]
+    command: ["./bin/sh", "-c", "mkfifo /tmp/can_pipe && ./bin/sender"]
 
   can_receiver:
+    image: emanueladler/can-receiver:latest
     build: .
     container_name: receiver
     network_mode: "host"
-    command: ["./receiver"]
+    command: ["./bin/receiver"]

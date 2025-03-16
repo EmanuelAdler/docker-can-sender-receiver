@@ -1,0 +1,27 @@
+name: MISRA-C Linting with Clang-Tidy
+
+on: [pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Clang-Tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy libcunit1 libcunit1-doc libcunit1-dev
+
+      - name: Create .clang-tidy Configuration
+        run: |
+          echo 'Checks: >' > .clang-tidy
+          echo '  -*,' >> .clang-tidy
+          echo '  misra-c2012-*,' >> .clang-tidy
+          echo '  readability-*,' >> .clang-tidy
+          echo '  bugprone-*,' >> .clang-tidy
+          echo '  performance-*' >> .clang-tidy
+          echo 'WarningsAsErrors: "*"' >> .clang-tidy
+      - name: Run Clang-Tidy on Source Files
+        run: |
+          clang-tidy src/*.c test/*.c -- -std=c99

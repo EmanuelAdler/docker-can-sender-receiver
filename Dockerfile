@@ -1,15 +1,25 @@
 FROM ubuntu:latest
 
+# Environment variables
+ENV SRC_DIR=/src
+ENV BIN_DIR=/bin
+
+# Obtain updated packages for the application
 RUN apt update && apt install -y \
     build-essential \
     can-utils \
     iproute2 \
-    iputils-ping
+    iputils-ping \
+    libssl-dev \
+    make
 
-COPY sender.c /sender.c
-COPY receiver.c /receiver.c
+# Transfer files to container
+COPY ${SRC_DIR} ${SRC_DIR}
 
-RUN gcc -o sender sender.c -Wall
-RUN gcc -o receiver receiver.c -Wall
+# Ensure bin directory exists
+RUN mkdir -p ${BIN_DIR}
+
+# Compile using Makefile
+RUN make -C ${SRC_DIR}
 
 CMD ["/bin/bash"]

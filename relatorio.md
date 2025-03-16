@@ -17,22 +17,20 @@ We implemented a **Continuous Integration (CI)** and **Continuous Deployment (CD
 ### **CI Process:**
 1. Linting using **MISRA-C** to enforce coding standards.
 2. Running **unit tests** automatically upon PR creation.
-3. Running **integration tests** on every push to `develop`.
+3. Running **integration tests** on every PR to `develop`.
 4. Building the Docker container to ensure successful compilation.
 
 ### **CD Process:**
 1. Every merge to `main` triggers an **automated build**.
 2. Docker images are built and pushed to a container registry.
 3. A deployment script is executed to update the live environment.
-4. If an issue arises, an automatic rollback is performed.
 
 ## 3. Test Structure and Policy
 Testing is a critical part of our workflow, consisting of:
 
 - **Unit Tests:** Implemented for core logic using a modular approach with `.h` and `.c` files.
 - **Integration Tests:** Ensure that different modules interact correctly.
-- **End-to-End (E2E) Tests:** Simulating real use cases.
-- **Automated CI Tests:** Run on every push and PR.
+- **Automated CI Tests:** Run on every PR.
 
 Each PR must pass all tests before being merged into `develop` or `main`.
 
@@ -83,14 +81,17 @@ This ensures that every commit provides meaningful context and can be easily tra
 - **Initial Misconfigurations:** Some dependencies were missing in scripts, requiring updates.
 - **Docker/VCan Issues on WSL2:** Led to switching to VirtualBox for a stable environment.
 - **Code Organization:** Refactoring into modules helped maintainability.
+- **Automated testing:** Using a test framework helped improve code quality and save time.
 
 ### **Improvements Implemented:**
-- Write here.
+- Automated unit and integration testing.
+- Project organized in separated folders.
+- Automated workflows for linting, testing and release.
 
 ### **Reflections from Team Members:**
-- **Member A:** "Write here."
-- **Member B:** "Write here."
-- **Member C:** "Write here."
-
-
+- **Paulo:** "Implementing unit and integration tests, along with GitHub Actions, improved my development process. Unit tests ensured each part worked correctly, while integration tests checked how they interacted. Automating everything with GitHub Actions saved time and caught issues. This experience showed me how testing makes code more reliable and deployments safer."
+- **Letícia Queiroz:** "This experience was completely new to me, as I had never worked with CAN communication and encryption in embedded software before. At first, I faced challenges such as the fragmentation of encrypted messages and code organization, but over time, I gradually gained a better understanding of the necessary structure. Modularizing functions and automating the process with Makefile significantly facilitated development, making the code more reusable and enabling more efficient testing. Additionally, we improved the environment setup to ensure that all dependencies were installed automatically."
+- **Emanuel Pereira:** "Managing the project configurations was a new challenge. Especially because it required good team management skills while carrying out tasks, as well as knowledge of how to use each tool. I was able to acquire new knowledge, not only technical but also leadership skills."
+- **Igor I.:** "In this project, I had my first collaborative experience using Git, GitHub, and Docker to manage parallel development. We implemented practices such as structured branching, pull requests with code reviews, and collaborative resolution of merge conflicts. My role focused on adapting functions to improve the project’s modularity, a critical factor in embedded systems to save some memory space and simplify the future implementation of the project."
+- **João Victor:** "It was my first experience working in a team using GitHub, I struggled to understand what I was doing, to check if I was using the GitHub corretly, to code and solve one of my assignments a lot, made a lot of errors and eventually needed to be helped by a teammate, besides this, my other assignments went without big challenges, it went almost smoothly, considering the errors were minimum, eventually the project was concluded with the efforts and great work of this team, definitely a necessary experience for every software developer."
 

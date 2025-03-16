@@ -1,0 +1,27 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test-and-send:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential can-utils libssl-dev libcunit1 libcunit1-doc libcunit1-dev lcov linux-modules-extra-$(uname -r)
+
+      - name: Install can interface
+        run: sudo ./setup_vcan.sh
+
+      - name: Run tests and send in parallel
+        run: |
+          cd test
+          make test
