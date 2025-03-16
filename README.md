@@ -88,6 +88,21 @@ Our project utilizes GitHub Actions to automate various aspects of development a
   - `latest` for the `main` and `develop` branches.
   - The specific Git reference name (e.g., branch name or tag).
 
+### 4. Automated Testing Workflow
+
+**Purpose:** Runs unit and integration tests to validate CAN message transmission.
+
+**Workflow File:** `.github/workflows/auto-tests.yml`
+
+**Triggers:**
+- Runs on every pull request to the `develop` branch.
+
+**Key Steps:**
+- **Checkout Code:** Retrieves the latest code from the repository.
+- **Install Dependencies:** Installs necessary packages, including `can-utils`, `libcunit1-dev`, `lcov`, and required kernel modules.
+- **Set Up CAN Interface:** Executes `setup_vcan.sh` to configure the virtual CAN interface.
+- **Run Tests:** Executes `make test` to compile and run unit and integration tests.
+
 ## Communication Test
 Send a message via CAN:
 ```sh
